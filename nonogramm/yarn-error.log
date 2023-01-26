@@ -1,0 +1,61 @@
+Arguments: 
+  /Users/liorsht/.fnm/node-versions/v16.14.0/installation/bin/node /usr/local/bin/yarn
+
+PATH: 
+  /Users/liorsht/.bun/bin:/Users/liorsht/opt/anaconda3/bin:/Users/liorsht/Library/Caches/fnm_multishells/51027_1673859850323/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/liorsht/.bun/bin:/Users/liorsht/opt/anaconda3/bin:/Users/liorsht/Library/Caches/fnm_multishells/29528_1673554230562/bin:/Library/Frameworks/Python.framework/Versions/3.9/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/mysql/bin/:/Users/liorsht/Library/Android/sdk/emulator:/Users/liorsht/Library/Android/sdk/tools:/Users/liorsht/Library/Android/sdk/tools/bin:/Users/liorsht/Library/Android/sdk/platform-tools:/usr/local/mysql/bin/:/Users/liorsht/Library/Android/sdk/emulator:/Users/liorsht/Library/Android/sdk/tools:/Users/liorsht/Library/Android/sdk/tools/bin:/Users/liorsht/Library/Android/sdk/platform-tools
+
+Yarn version: 
+  1.22.10
+
+Node version: 
+  16.14.0
+
+Platform: 
+  darwin x64
+
+Trace: 
+  Error: http://npm.dev.wixpress.com/@fed-exam%2fconfig: not_found
+      at Request.params.callback [as _callback] (/usr/local/lib/node_modules/yarn/lib/cli.js:66988:18)
+      at Request.self.callback (/usr/local/lib/node_modules/yarn/lib/cli.js:140662:22)
+      at Request.emit (node:events:520:28)
+      at Request.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141634:10)
+      at Request.emit (node:events:520:28)
+      at Gunzip.<anonymous> (/usr/local/lib/node_modules/yarn/lib/cli.js:141556:12)
+      at Object.onceWrapper (node:events:639:28)
+      at Gunzip.emit (node:events:520:28)
+      at endReadableNT (node:internal/streams/readable:1346:12)
+      at processTicksAndRejections (node:internal/process/task_queues:83:21)
+
+npm manifest: 
+  {
+  	"name": "@fed-exam/server",
+  	"version": "1.0.0",
+  	"main": "index.js",
+    "scripts": {
+      "start": "ts-node-dev index.ts",
+      "d": "ts-node index.ts"
+    },
+  	"author": "",
+  	"license": "ISC",
+  	"dependencies": {
+  		"@fed-exam/config": "^1.0.0",
+  		"@types/body-parser": "^1.17.1",
+  		"@types/chance": "^1.0.6",
+  		"@types/express": "^4.17.1",
+  		"@types/node": "^12.7.2",
+  		"body-parser": "^1.19.0",
+  		"chance": "^1.1.0",
+  		"express": "^4.17.1",
+  		"googleapis": "^39.2.0",
+  		"ts-node": "^8.3.0",
+  		"typescript": "^3.5.3",
+  		"ts-node-dev": "1.1.0"
+  	},
+  	"description": ""
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
