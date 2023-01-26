@@ -3,7 +3,7 @@ import Block from "./Block";
 import subBlock from "./SubBlock";
 import { Orientation, SquareValue } from "../types";
 
-class block_arr {
+export class block_arr {
   index: number;
   lengths: number[];
   blocks: Block[];
@@ -183,43 +183,4 @@ class block_arr {
     this.changeBorder();
   }
 }
-export class blockRowArr extends block_arr {
-  constructor(
-    index: number,
-    row: Square[],
-    orient: Orientation,
-    matrix: number[][]
-  ) {
-    super(index, orient);
-    this.squares = row;
-    this.lengths = matrix[index].filter((n) => n !== 0);
-    this.lengths.map((b) => {
-      this.blocks.push(new Block(b, Orientation.row));
-    });
-  }
-  append(index: number, s: Square) {
-    let i = 0;
-    while (this.blocks[index].block[i].col < s.col) i++;
-    this.blocks[index].block.splice(i, 0, s);
-    s.black();
-  }
-}
 
-export class blockColArr extends block_arr {
-  constructor(matrix: number[][], index: number, orient: Orientation) {
-    super(index, orient);
-    let i = matrix.length - 1;
-    while (i >= 0 && matrix[i][index]) {
-      this.lengths.unshift(matrix[i--][index]);
-    }
-    this.lengths.map((b) => {
-      this.blocks.push(new Block(b, Orientation.col));
-    });
-  }
-  pushSquare(s: Square) {
-    this.squares.push(s);
-  }
-  pushBlockLength(n: number) {
-    this.lengths.push(n);
-  }
-}
