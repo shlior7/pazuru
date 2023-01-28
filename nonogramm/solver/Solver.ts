@@ -1,13 +1,14 @@
 import { Orientation, SquareValue } from "../types";
-import { blockColArr, blockRowArr } from "./BlockArr";
+import { RowBlockList } from "./BlockRowArr";
+import { ColumnBlockList } from "./BlockColumnArr";
 import Square from "./Square";
 
 class Solver {
   cols_number: number;
   row_number: number;
   grid: Square[][];
-  rows: blockRowArr[];
-  cols: blockColArr[];
+  rows: RowBlockList[];
+  cols: ColumnBlockList[];
 
   constructor(left: number[][], up: number[][]) {
     this.grid = [];
@@ -22,9 +23,9 @@ class Solver {
   initialize(left: number[][], up: number[][]) {
     for (let i = 0; i < this.row_number; i++) {
       this.grid.push([]);
-      this.rows[i] = new blockRowArr(i, this.grid[i], Orientation.row, left);
+      this.rows[i] = new RowBlockList(i, this.grid[i], Orientation.row, left);
       for (let j = 0; j < this.cols_number; j++) {
-        if (!i) this.cols[j] = new blockColArr(up, j, Orientation.col); //for every col in the first row create a colBlockArr
+        if (!i) this.cols[j] = new ColumnBlockList(up, j, Orientation.col); //for every col in the first row create a colBlockArr
         this.grid[i].push(new Square(i, j, this.rows[i], this.cols[j]));
         this.cols[j].pushSquare(this.grid[i][j]);
         if (i === this.row_number - 1) this.cols[j].setBorder();
@@ -32,40 +33,48 @@ class Solver {
       this.rows[i].setBorder();
     }
   }
-  ColorSquare(row: number, col: number) {
-    this.grid[row][col].black();
-  }
-  goThrogh() {
+
+  goThroghGrid() {
     this.rows.forEach((row) => {
-      row.goThrough();
+      row.goThroughBlocks();
     });
     this.cols.forEach((col) => {
-      col.goThrough();
+      col.goThroughBlocks();
     });
   }
 
   getGrid() {
     return this.grid.map((row) => row.map((square) => square.value));
   }
-
+  isSolved() {
+    return this.grid.every((row) =>
+      row.every((square) => square.value !== SquareValue.white)
+    )
+  }
   solve() {
+    console.log("solving")
     let i = 0;
     try {
       while (
-        i < 20 &&
-        !this.grid.every((row) =>
-          row.every((square) => square.value !== SquareValue.white)
-        )
+        i < 100 &&
+        !this.isSolved()
       ) {
         i++;
-        this.goThrogh();
+        this.goThroghGrid();
         // console.log("******************************************", i);
       }
     }
     catch (error) {
       console.error(error);
     }
+    if (this.isSolved())
+      console.log("solved")
+    else {
+      console.log("not solved")
+    }
+
     return this.getGrid();
   }
 }
+
 export default Solver;

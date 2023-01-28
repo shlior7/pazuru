@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import Solver from "./solver/Solver";
+import puzzle from './nonograms/Deer15X15.json'
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -20,7 +21,6 @@ app.post("/solve", (req, res) => {
     res.sendStatus(400)
   }
   else {
-    console.log("solving")
     const solveGrid = new Solver(req.body.left, req.body.up);
     res.send(JSON.stringify(solveGrid.solve()));
   }
@@ -28,3 +28,8 @@ app.post("/solve", (req, res) => {
 
 app.listen(8001);
 console.log("server running", 8001);
+
+
+
+// const solveGrid = new Solver(puzzle.left, puzzle.up);
+// solveGrid.solve()

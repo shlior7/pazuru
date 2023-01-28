@@ -1,7 +1,7 @@
 import { Orientation } from "../types";
 import Square from "./Square";
 
-class subBlock {
+class SubBlock {
   length: number;
   block: Square[];
   orient: Orientation;
@@ -65,4 +65,4 @@ class subBlock {
   }
 }
 
-export default subBlock;
+export default SubBlock;

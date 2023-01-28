@@ -1,0 +1,27 @@
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td {
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+}
+
+.nonogram-cell {
+  background-color: white;
+}
+
+.nonogram-cell.filled {
+  background-color: black;
+}
+
+.nonogram-top-row td {
+  background-color: lightgray;
+}
+
+.nonogram-left-col td {
+  background-color: lightgray;
+}

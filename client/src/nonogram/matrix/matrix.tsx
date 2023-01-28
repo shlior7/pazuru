@@ -34,7 +34,7 @@ export const InputMatrix: FunctionComponent<inputMatrixProps> = ({
     <div>
       <ul className="grid-dd" key={"input_grid"}>
         {grid.map((row: number[], i) => (
-          <ul key={i}>
+          <ul className="row" key={i}>
             {row.map((val: number, j) => (
               <li key={`${i},${j}`}>
                 <Numbersquare

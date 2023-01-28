@@ -1,4 +1,5 @@
-import { blockColArr, blockRowArr } from "./BlockArr";
+import { RowBlockList } from "./BlockRowArr";
+import { ColumnBlockList } from "./BlockColumnArr";
 import Block from "./Block";
 import { Orientation, SquareValue } from "../types";
 
@@ -6,14 +7,14 @@ class Square {
   value: number;
   row: number;
   col: number;
-  rowBlock: blockRowArr;
-  colBlock: blockColArr;
+  rowBlock: RowBlockList;
+  colBlock: ColumnBlockList;
   myBlocks: Block[];
   constructor(
     row: number,
     col: number,
-    rowBlock: blockRowArr,
-    colBlock: blockColArr
+    rowBlock: RowBlockList,
+    colBlock: ColumnBlockList
   ) {
     this.row = row;
     this.col = col;

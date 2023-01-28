@@ -5,6 +5,11 @@
 li {
   display: inline-block;
 }
+
+ul ul {
+  height: var(--square_size);
+}
+
 .square {
   display: flex;
   width: var(--square_size);

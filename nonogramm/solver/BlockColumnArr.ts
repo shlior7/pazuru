@@ -1,9 +1,9 @@
 import { Orientation } from '../types';
 import Block from './Block';
-import { block_arr } from './BlockArr';
+import { BlockList } from './BlockList';
 import Square from './Square';
 
-export class blockColArr extends block_arr {
+export class ColumnBlockList extends BlockList {
   constructor(matrix: number[][], index: number, orient: Orientation) {
     super(index, orient);
     let i = matrix.length - 1;

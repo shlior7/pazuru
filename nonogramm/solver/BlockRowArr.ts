@@ -1,9 +1,9 @@
 import { Orientation } from "../types";
 import Block from "./Block";
-import { block_arr } from "./BlockArr";
+import { BlockList } from "./BlockList";
 import Square from "./Square";
 
-export class blockRowArr extends block_arr {
+export class RowBlockList extends BlockList {
   constructor(
     index: number,
     row: Square[],
@@ -17,10 +17,10 @@ export class blockRowArr extends block_arr {
       this.blocks.push(new Block(b, Orientation.row));
     });
   }
-  append(index: number, s: Square) {
-    let i = 0;
-    while (this.blocks[index].block[i].col < s.col) i++;
-    this.blocks[index].block.splice(i, 0, s);
-    s.black();
-  }
+  // append(index: number, s: Square) {
+  //   let i = 0;
+  //   while (this.blocks[index].block[i].col < s.col) i++;
+  //   this.blocks[index].block.splice(i, 0, s);
+  //   s.black();
+  // }
 }

@@ -1,9 +1,9 @@
 import Square from "./Square";
 import Block from "./Block";
-import subBlock from "./SubBlock";
+import SubBlock from "./SubBlock";
 import { Orientation, SquareValue } from "../types";
 
-export class block_arr {
+export class BlockList {
   index: number;
   lengths: number[];
   blocks: Block[];
@@ -18,7 +18,7 @@ export class block_arr {
   }
   jumpOverXLeft(i: number, blLeft: Block, index: number) {
     let k = i;
-    let XBlock = new subBlock(blLeft.orient);
+    let XBlock = new SubBlock(blLeft.orient);
     while (
       k < this.squares.length - 1 &&
       this.squares[k].value === SquareValue.white
@@ -53,7 +53,7 @@ export class block_arr {
   }
   jumpOverXRight(i: number, blRight: Block, index: number) {
     let f = i;
-    let XBlock = new subBlock(blRight.orient);
+    let XBlock = new SubBlock(blRight.orient);
     while (f > 0 && this.squares[f].value === SquareValue.white) {
       f--;
     }
@@ -116,9 +116,10 @@ export class block_arr {
       });
     }
   }
+
   changeBorder() {
     //console.log("Change", this);
-    this.blocks.map((blLeft, index) => {
+    this.blocks.forEach((blLeft, index) => {
       let blRight = this.blocks[this.blocks.length - 1 - index];
 
       let i = blLeft.left_border;
@@ -166,6 +167,7 @@ export class block_arr {
       j -= blRight.logical_length + 1;
       //console.log("b", i, j, bl);
     });
+
     this.blocks.map((bl) => {
       // console.log("c", bl.left_border, bl.right_border, bl);
       bl.squareBlock = this.squares.slice(bl.left_border, bl.right_border + 1);
@@ -175,9 +177,10 @@ export class block_arr {
     });
   }
 
-  goThrough() {
+  goThroughBlocks() {
     this.blocks.forEach((block, index) => {
-      block.gothrough();
+      block.gothroughBlock();
+
       this.DeleteBlocks(block, index);
     });
     this.changeBorder();

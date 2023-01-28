@@ -3,6 +3,7 @@ import { Game } from './Sudoku';
 import { SudokuProvider } from './context/SudokuContext';
 import { Nonogram } from './nonogram/nonogram';
 import './App.css';
+import { NonogramProvider } from './context/NonogramContext';
 
 /**
  * App is the root React component.
@@ -10,7 +11,9 @@ import './App.css';
 const getGame = (game: string) => {
   switch(game){
     case 'nonogram':
-      return <Nonogram />;
+      return <NonogramProvider>
+          <Nonogram />
+        </NonogramProvider>;
     case 'sudoku':
       return <SudokuProvider>
            <Game />

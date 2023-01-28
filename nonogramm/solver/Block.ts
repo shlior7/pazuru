@@ -1,8 +1,8 @@
 import { Orientation, SquareValue } from "../types";
 import Square from "./Square";
-import subBlock from "./SubBlock";
+import SubBlock from "./SubBlock";
 
-class Block {
+export class Block {
   readonly logical_length: number;
   offset: number;
   block: Square[];
@@ -10,8 +10,7 @@ class Block {
   right_border: number;
   orient: Orientation;
   XAround: number[];
-  mySubBlock: subBlock;
-
+  mySubBlock: SubBlock;
   constructor(logical_length: number, orient: Orientation) {
     this.logical_length = logical_length;
     this.left_border = 0;
@@ -20,7 +19,7 @@ class Block {
     this.orient = orient;
     this.offset = 0;
     this.XAround = [];
-    this.mySubBlock = new subBlock(this.orient);
+    this.mySubBlock = new SubBlock(this.orient);
   }
   get ph_length() {
     return this.block.length;
@@ -33,14 +32,17 @@ class Block {
         : (this.offset = squares[0].row);
     }
   }
+
   getPossibleRight() {
     return (
       this.mySubBlock.GetActualStartAndEnd().start + this.logical_length - 1
     );
   }
+
   getPossibleLeft() {
     return this.mySubBlock.GetActualStartAndEnd().end - this.logical_length + 1;
   }
+
   deleteBlock(start: number, end: number) {
     for (let i = start - this.offset; i <= end - this.offset; i++) {
       if (i >= 0 && i < this.block.length) {
@@ -62,107 +64,49 @@ class Block {
       }
     }
   }
-  gothrough() {
-    // let black_block: subBlock = new subBlock(0, this.orient);
-    let i = 0;
-    while (i < this.block.length) {
-      let i_square = this.block[i];
-      // //console.log("current square in gothrogh ");
-      //  //console.log(i_square, i);
-      switch (i_square.value) {
-        case SquareValue.black:
-          // //console.log("current square in gothrogh ");
-          // //console.log(i_square, i);
-          //  //console.log(i_square.myOrientedBlocks(this.orient).length);
-          let black_block: subBlock = new subBlock(this.orient);
-          this.findBlockAround(i, black_block, SquareValue.black);
-          if (black_block.IsSubBlockClosed()) {
-            let actual = black_block.GetActualStartAndEnd();
-            // //console.log("AAAAA", actual.start, actual.end);
-            /* if (this.block[actual.start - this.offset - 1]) {
-              this.block[actual.start - this.offset - 1].X();
-            }
-            if (this.block[actual.end - this.offset + 1]) {
-              this.block[actual.end - this.offset + 1].X();
-            }*/
-            // //console.log(black_block, "400 XXX");
-          }
-          if (black_block.IsSquaresLoyal()) {
-            i = this.ColorAroundSubBlock(black_block);
-            this.mySubBlock = black_block;
-            //   //console.log("i: " + i);
-          } else {
-            if (black_block.length > this.logical_length) {
-              /*this.deleteBlock(
-                black_block.GetActualStartAndEnd().start,
-                black_block.GetActualStartAndEnd().end
-              );*/
-            }
-          }
-          //  black_block.clear();
-          //   //console.log(black_block.length + " length after clear");
-          //  X_block.clear();
-          break;
-        case SquareValue.white:
-          // "white");
-          if (
-            this.right_border - this.logical_length - this.offset < i && //overlapping from left and right border
-            i < this.left_border + this.logical_length - this.offset
-          ) {
-            // "current square in gothrogh ");
-            // i_square, i);
-            this.block[i].black();
-            // //console.log(this.block[i], "color B");
-          }
-          break;
-        case SquareValue.X:
-          break;
-      }
-      i++;
-    }
-    // //console.log("//////End of Block gothrogh/////////");
-  }
+
   ///gets a index and the subBlock and finds the block of squares of the same squareType around it
-  findBlockAround(i_Index: number, t_block: subBlock, squareType: SquareValue) {
-    t_block.push(this.block[i_Index]);
-    function blackBlockLeft(i_LeftIndex: number, block: Square[]) {
-      ////console.log("i_LeftIndex: " + i_LeftIndex);
-      if (i_LeftIndex < 0 || block[i_LeftIndex].value !== squareType) return;
-      t_block.unshift(block[i_LeftIndex]);
-      // //console.log(t_block.length, t_block.block[0], t_block);
-      blackBlockLeft(i_LeftIndex - 1, block);
+  findBlockAround(index: number, subBlock: SubBlock, squareValue: SquareValue) {
+    subBlock.push(this.block[index]);
+    function blackBlockLeft(leftIndex: number, block: Square[]) {
+      //console.log("i_LeftIndex: " + i_LeftIndex);
+      if (leftIndex < 0 || block[leftIndex].value !== squareValue) return;
+      subBlock.unshift(block[leftIndex]);
+      // console.log(t_block.length, t_block.block[0], t_block);
+      blackBlockLeft(leftIndex - 1, block);
     }
-    function blackBlockRight(i_RightIndex: number, block: Square[]): number {
-      // //console.log("i_RightIndex: " + i_RightIndex);
+    function blackBlockRight(rightIndex: number, block: Square[]): number {
+      // console.log("i_RightIndex: " + i_RightIndex);
       if (
-        i_RightIndex >= block.length ||
-        block[i_RightIndex].value !== squareType
+        rightIndex >= block.length ||
+        block[rightIndex].value !== squareValue
       )
-        return i_RightIndex - 1;
-      t_block.push(block[i_RightIndex]);
-      // //console.log(t_block.length, t_block.block[t_block.length - 1], t_block);
-      return blackBlockRight(i_RightIndex + 1, block);
+        return rightIndex - 1;
+      subBlock.push(block[rightIndex]);
+      // console.log(t_block.length, t_block.block[t_block.length - 1], t_block);
+      return blackBlockRight(rightIndex + 1, block);
     }
-    blackBlockLeft(i_Index - 1, this.block);
-    blackBlockRight(i_Index + 1, this.block);
+    blackBlockLeft(index - 1, this.block);
+    blackBlockRight(index + 1, this.block);
   }
 
-  ColorAroundSubBlock(t_block: subBlock) {
-    let ActualBlock = t_block.GetActualStartAndEnd();
+
+  colorAroundSubBlock(subBlock: SubBlock) {
+    let ActualBlock = subBlock.GetActualStartAndEnd();
     let start = ActualBlock.start - 1;
     let end = ActualBlock.end + 1;
-    // //console.log(t_block.length, this, start, end, "len,this,start,end");
-    if (t_block.length > this.logical_length) return end - this.offset;
-    // //console.log("start,end1: " + start, end);
+
+    if (subBlock.length > this.logical_length) return end - this.offset;
+
     function ColorLeft(FromIndex: number, To: number, Block: Block) {
       if (FromIndex + Block.offset >= To) return true;
       ////console.log(FromIndex, "fromIndex");
       if (Block.block[FromIndex].value === SquareValue.X) return false;
       Block.block[FromIndex].color(SquareValue.black);
-      t_block.push(Block.block[FromIndex]);
+      subBlock.push(Block.block[FromIndex]);
       if (!ColorLeft(FromIndex + 1, To, Block)) {
         Block.block[FromIndex].color(SquareValue.white);
-        t_block.pop();
+        subBlock.pop();
         return false;
       }
       return true;
@@ -172,10 +116,10 @@ class Block {
       ////console.log(FromIndex, "fromIndex");
       if (Block.block[FromIndex].value === SquareValue.X) return false;
       Block.block[FromIndex].color(SquareValue.black);
-      t_block.push(Block.block[FromIndex]);
+      subBlock.push(Block.block[FromIndex]);
       if (!ColorLeft(FromIndex - 1, To, Block)) {
         Block.block[FromIndex].color(SquareValue.white);
-        t_block.pop();
+        subBlock.pop();
         return false;
       }
       return true;
@@ -186,40 +130,58 @@ class Block {
       this.right_border - this.logical_length,
       this
     );
-    /*while (end < this.left_border + this.logical_length) {
-      if (this.block[end - this.offset].value !== SquareValue.X) {
-        this.block[end - this.offset].color(SquareValue.white);
-        ////console.log(this.block[end - this.offset], "color R");
-        t_block.push(this.block[end - this.offset]);
-      }
-      end++;
-    }
-    while (start > this.right_border - this.logical_length) {
-      if (this.block[start - this.offset].value !== SquareValue.X) {
-        this.block[start - this.offset].black();
-        ////console.log(this.block[start - this.offset], "color L");
-        t_block.unshift(this.block[start - this.offset]);
-      }
-      start--;
-    }*/
 
-    //  //console.log("start,end2: " + start, end);
-    ActualBlock = t_block.GetActualStartAndEnd();
+    ActualBlock = subBlock.GetActualStartAndEnd();
     start = ActualBlock.start;
     end = ActualBlock.end;
-    ////console.log(this, t_block, ActualBlock);
-    ////console.log("start,end3: " + start, end);
     this.fillBlockWithX(start, end);
-    //this.SetBorderAroundSubBlock(start, end);
+    return end - this.offset;
+  }
+
+  colorAroundSubBlock2(subBlock: SubBlock) {
+    let ActualBlock = subBlock.GetActualStartAndEnd();
+    let start = ActualBlock.start - 1;
+    let end = ActualBlock.end + 1;
+
+    if (subBlock.length > this.logical_length) return end - this.offset;
+
+    function ColorLeft(from: number, To: number, Block: Block) {
+      while (from + Block.offset < To) {
+        if (Block.block[from].value === SquareValue.X) return false;
+        Block.block[from].color(SquareValue.black);
+        subBlock.push(Block.block[from]);
+        from++;
+      }
+      return true;
+    }
+    function ColorRight(from: number, To: number, Block: Block) {
+      while (from + Block.offset > To) {
+        if (Block.block[from].value === SquareValue.X) return false;
+        Block.block[from].black();
+        subBlock.push(Block.block[from]);
+        from--;
+      }
+      return true;
+    }
+    ColorLeft(end - this.offset, this.left_border + this.logical_length, this);
+    ColorRight(
+      start - this.offset,
+      this.right_border - this.logical_length,
+      this
+    );
+
+    ActualBlock = subBlock.GetActualStartAndEnd();
+    this.fillBlockWithX(ActualBlock.start, ActualBlock.end);
+
     return end - this.offset;
   }
 
   fillBlockWithX(start: number, end: number) {
-    let i; // = end - this.logical_length - this.offset;
+    let i;
+    //if Block is Done
     if (end - start + 1 === this.logical_length) {
-      ////console.log("Yesssss");
-      ////console.log(start, end, this.block, this.left_border, this.right_border);
-
+      // console.log("Yesssss");
+      // console.log(start, end, this.block, this.left_border, this.right_border);
       this.XAround = [start - 1, end + 1];
     }
     for (i = this.left_border; i <= this.right_border; i++) {
@@ -228,9 +190,9 @@ class Block {
       if (i <= end - this.logical_length || i >= start + this.logical_length) {
         if (this.block[i_inBlock].IsLoyalSquare(this.orient)) {
           this.block[i_inBlock].X();
-          ////console.log("XXX");
-          ////console.log(
-          // i,
+          // console.log("XXX");
+          // console.log(
+          //   i,
           //   i_inBlock,
           //   this.left_border,
           //   this.right_border,
@@ -239,13 +201,13 @@ class Block {
           // );
         }
       }
-      ////console.log(i, end, start, this);
+      //console.log(i, end, start, this);
 
       if (end - start + 1 === this.logical_length && i <= end && i >= start) {
-        ////console.log(i, end, start, this);
+        // console.log(i, end, start, this);
 
-        ////console.log(
-        // i,
+        // console.log(
+        //   i,
         //   this,
         //   this.left_border,
         //   this.right_border,
@@ -277,6 +239,74 @@ class Block {
     );
     this.right_border = right;
     this.left_border = left;
+  }
+
+  gothroughBlock() {
+    // let black_block: subBlock = new subBlock(0, this.orient);
+    let i = 0;
+
+    while (i < this.block.length) {
+      let current_square = this.block[i];
+      // console.log("current square in gothrogh ");
+      //  console.log(i_square, i);
+      switch (current_square.value) {
+        case SquareValue.black:
+          // console.log("current square in gothrogh ");
+          // console.log(i_square, i);
+          //  console.log(i_square.myOrientedBlocks(this.orient).length);
+          let black_block: SubBlock = new SubBlock(this.orient);
+          this.findBlockAround(i, black_block, SquareValue.black);
+          /*// if (black_block.IsSubBlockClosed()) {
+          //   let actual = black_block.GetActualStartAndEnd();
+          //   // console.log("AAAAA", actual.start, actual.end);
+          //   // if (this.block[actual.start - this.offset - 1]) {
+          //   //   this.block[actual.start - this.offset - 1].X();
+          //   // }
+          //   // if (this.block[actual.end - this.offset + 1]) {
+          //   //   this.block[actual.end - this.offset + 1].X();
+          //   // }
+          //   // console.log(black_block, "400 XXX");
+          // }*/
+          if (black_block.IsSquaresLoyal()) {
+            i = this.colorAroundSubBlock2(black_block);
+            this.mySubBlock = black_block;
+            //   console.log("i: " + i);
+          } else {
+            if (black_block.length > this.logical_length) {
+              this.deleteBlock(
+                black_block.GetActualStartAndEnd().start,
+                black_block.GetActualStartAndEnd().end
+              );
+            }
+          }
+          //  black_block.clear();
+          //   console.log(black_block.length + " length after clear");
+          //  X_block.clear();
+          break;
+        // case SquareValue.white:
+        //   if (
+        //     this.right_border - this.logical_length - this.offset < i &&
+        //     i < this.left_border + this.logical_length - this.offset
+        //   ) {
+        //     // console.log("current square in gothrogh ");
+        //     // console.log(i_square, i);
+        //     this.block[i].black();
+        //     // console.log(this.block[i], "color B");
+        //   }
+        //   break;
+        // case SquareValue.X:
+        //   break;
+      }
+      i++;
+    }
+
+    for (let i = this.right_border - this.logical_length - this.offset + 1; i < this.left_border + this.logical_length - this.offset; i++) {
+      if (this.block[i] === undefined)
+        console.log('undefined')
+      this.block[i].black();
+    }
+
+
   }
 }
 
