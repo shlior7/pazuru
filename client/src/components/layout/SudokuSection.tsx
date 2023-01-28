@@ -122,7 +122,7 @@ export const SudokuGameSection = (props: GameSectionProps) => {
                     rows.map((column) => {
                       const indexOfArray = row * 9 + column;
                       const value = gameArray[indexOfArray];
-
+                      
                       if (cellSelected === indexOfArray) {
                         return _selectedCell(indexOfArray, value, 'highlight');
                       }

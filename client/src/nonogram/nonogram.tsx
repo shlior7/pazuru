@@ -2,7 +2,7 @@ import React, { FunctionComponent,  useState } from "react";
 import axios from 'axios'
 import { BoardMatrix, InputMatrix } from "./matrix/matrix";
 import "./nonogram.css";
-import puzzle from './nonograms/Astronaout25X20.json'
+import puzzle from './nonograms/Deer15X15.json'
 
 type NonogramProps = {
   rows?: number;

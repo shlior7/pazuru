@@ -81,6 +81,7 @@ export class BlockList {
     //console.log(" ");
     return newRight;
   }
+
   DeleteBlocks(block: Block, index: number) {
     let Finished = false;
     block.XAround.forEach((i) => {
@@ -90,6 +91,7 @@ export class BlockList {
         //console.log(block, this.squares[i], "XXXXXXX");
       }
     });
+
     if (Finished) {
       if (
         this.blocks[index - 1] &&
@@ -128,39 +130,18 @@ export class BlockList {
       let k = this.jumpOverXLeft(i, blLeft, index);
       let f = this.jumpOverXRight(j, blRight, this.blocks.length - 1 - index);
 
-      /*if (blLeft.getPossibleLeft() > k) {
-          k = blLeft.getPossibleLeft();
-        }
-        if (blRight.getPossibleRight() < f) {
-          f = blRight.getPossibleRight();
-          if (
-            index < this.blocks.length - 1 &&
-            this.blocks[index + 1].left_border <= f
-          )
-            this.blocks[index + 1].left_border = f;
-        }*/
-
-      //console.log(i, j);
       blLeft.left_border = k;
       blRight.right_border = f;
     });
     this.blocks.map((bl, index) => {
       bl.SetNewBorders(bl.left_border, bl.right_border);
-
-      //console.log("c", bl.left_border, bl.right_border, bl);
-      //  bl.squareBlock = this.squares.slice(bl.left_border, bl.right_border + 1);
-      // bl.block.forEach((square) => {
-      //square.myBlocks.push(bl);
-      //   });
     });
   }
   setBorder() {
     let i = 0;
     let j = this.squares.length - 1;
-    //console.log(i, j);
     this.blocks.map((blLeft, index) => {
       let blRight = this.blocks[this.blocks.length - 1 - index];
-      // console.log("a", i, j, bl);
       blLeft.left_border = i; //including
       blRight.right_border = j;
       i += blLeft.logical_length + 1;
@@ -180,7 +161,6 @@ export class BlockList {
   goThroughBlocks() {
     this.blocks.forEach((block, index) => {
       block.gothroughBlock();
-
       this.DeleteBlocks(block, index);
     });
     this.changeBorder();

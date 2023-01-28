@@ -30,7 +30,7 @@ public class SudokuSolver {
 					if (luah[i][j][0] == 0) lastResort(luah, i, j);
 					if (luah[i][j][0] == 0) OnlyOneOption(luah, i, j);
 					if (luah[i][j][0] != 0) epus(luah, i, j);
-					if (counter == 1000) {
+					if (counter == 10000) {
 						counter = -1;
 						Success = false;
 					}
@@ -41,9 +41,15 @@ public class SudokuSolver {
 		if (counter != -1) {
 			Success = true;
 		} 
-		
+		else{
+			bruteForce(luah);
+		}
 		print(luah, 0);
 		return getSolvedLayer();
+	}
+	public void bruteForce(int[][][] luah)
+	{
+		 
 	}
 
 	public int[][] getSolvedLayer() {
@@ -75,18 +81,6 @@ public class SudokuSolver {
 				tlat[i][j][k] = 0;
 		}
 	}
-
-	// public void epus(int[][][] tlat) {
-	// 	for (int i = 0; i < tlat.length; i++) {
-	// 		for (int j = 0; j < tlat[i].length; j++) {
-	// 			if (tlat[i][j][0] != 0) {
-	// 				for (int k = 1; k < tlat[i][j].length; k++) {
-	// 					tlat[i][j][k] = 0;
-	// 				}
-	// 			}
-	// 		}
-	// 	}
-	// }
 
 	public void print(int[][][] tlat, int num) {
 		for (int i = 0; i < tlat.length; i++) {
@@ -257,6 +251,7 @@ public class SudokuSolver {
 			if (luah[i][k][0] != 0) {
 				luah[i][j][luah[i][k][0]] = 0;
 			}
+
 			if (isCoupled && isCoupled(luah, i, k, secCouples) && k != j) {
 				if (couples[0] == secCouples[0] && couples[1] == secCouples[1]
 						|| couples[0] == secCouples[1] && couples[1] == secCouples[0]) {

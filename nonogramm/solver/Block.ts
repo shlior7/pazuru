@@ -190,31 +190,7 @@ export class Block {
       if (i <= end - this.logical_length || i >= start + this.logical_length) {
         if (this.block[i_inBlock].IsLoyalSquare(this.orient)) {
           this.block[i_inBlock].X();
-          // console.log("XXX");
-          // console.log(
-          //   i,
-          //   i_inBlock,
-          //   this.left_border,
-          //   this.right_border,
-          //   this.offset,
-          //   this.block[i_inBlock]
-          // );
         }
-      }
-      //console.log(i, end, start, this);
-
-      if (end - start + 1 === this.logical_length && i <= end && i >= start) {
-        // console.log(i, end, start, this);
-
-        // console.log(
-        //   i,
-        //   this,
-        //   this.left_border,
-        //   this.right_border,
-        //   this.offset,
-        //   this.block[i_inBlock],
-        //   this.block[i_inBlock].myBlocks.findIndex((block) => block === this)
-        // );
       }
     }
   }
@@ -247,62 +223,25 @@ export class Block {
 
     while (i < this.block.length) {
       let current_square = this.block[i];
-      // console.log("current square in gothrogh ");
-      //  console.log(i_square, i);
-      switch (current_square.value) {
-        case SquareValue.black:
-          // console.log("current square in gothrogh ");
-          // console.log(i_square, i);
-          //  console.log(i_square.myOrientedBlocks(this.orient).length);
-          let black_block: SubBlock = new SubBlock(this.orient);
-          this.findBlockAround(i, black_block, SquareValue.black);
-          /*// if (black_block.IsSubBlockClosed()) {
-          //   let actual = black_block.GetActualStartAndEnd();
-          //   // console.log("AAAAA", actual.start, actual.end);
-          //   // if (this.block[actual.start - this.offset - 1]) {
-          //   //   this.block[actual.start - this.offset - 1].X();
-          //   // }
-          //   // if (this.block[actual.end - this.offset + 1]) {
-          //   //   this.block[actual.end - this.offset + 1].X();
-          //   // }
-          //   // console.log(black_block, "400 XXX");
-          // }*/
-          if (black_block.IsSquaresLoyal()) {
-            i = this.colorAroundSubBlock2(black_block);
-            this.mySubBlock = black_block;
-            //   console.log("i: " + i);
-          } else {
-            if (black_block.length > this.logical_length) {
-              this.deleteBlock(
-                black_block.GetActualStartAndEnd().start,
-                black_block.GetActualStartAndEnd().end
-              );
-            }
+      if (current_square.value === SquareValue.black) {
+        let black_block: SubBlock = new SubBlock(this.orient);
+        this.findBlockAround(i, black_block, SquareValue.black);
+        if (black_block.IsSquaresLoyal()) {
+          i = this.colorAroundSubBlock2(black_block);
+          this.mySubBlock = black_block;
+        } else {
+          if (black_block.length > this.logical_length) {
+            this.deleteBlock(
+              black_block.GetActualStartAndEnd().start,
+              black_block.GetActualStartAndEnd().end
+            );
           }
-          //  black_block.clear();
-          //   console.log(black_block.length + " length after clear");
-          //  X_block.clear();
-          break;
-        // case SquareValue.white:
-        //   if (
-        //     this.right_border - this.logical_length - this.offset < i &&
-        //     i < this.left_border + this.logical_length - this.offset
-        //   ) {
-        //     // console.log("current square in gothrogh ");
-        //     // console.log(i_square, i);
-        //     this.block[i].black();
-        //     // console.log(this.block[i], "color B");
-        //   }
-        //   break;
-        // case SquareValue.X:
-        //   break;
+        }
       }
       i++;
     }
 
     for (let i = this.right_border - this.logical_length - this.offset + 1; i < this.left_border + this.logical_length - this.offset; i++) {
-      if (this.block[i] === undefined)
-        console.log('undefined')
       this.block[i].black();
     }
 

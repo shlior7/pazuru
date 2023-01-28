@@ -7,11 +7,12 @@ import { Footer } from './components/layout/Footer';
 import { getUniqueSudoku } from './solver/UniqueSudoku';
 import { useSudokuContext } from './context/SudokuContext';
 import axios from 'axios';
+import { Nonogram } from './nonogram/nonogram';
 
 /**
  * Game is the main React component.
  */
-export const Sudoku: React.FC<{}> = () => {
+export const Nonograms: React.FC<{}> = () => {
   /**
    * All the variables for holding state:
    * gameArray: Holds the current state of the game.
@@ -239,18 +240,7 @@ export const Sudoku: React.FC<{}> = () => {
       <div className={overlay?"container blur":"container"}>
         <Header onClick={onClickNewGame}/>
         <div className="innercontainer">
-          <SudokuGameSection
-            onClick={(indexOfArray: number) => onClickCell(indexOfArray)}
-          />
-          <StatusSection
-            onClickNumber={(number: string) => onClickNumber(number)}
-            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => onChangeDifficulty(e)}
-            onClickUndo={onClickUndo}
-            onClickErase={onClickErase}
-            onClickHint={onClickHint}
-            onClickMistakesMode={onClickMistakesMode}
-            onClickFastMode={onClickFastMode}
-            onSolve={onClickSolve}
+          <Nonogram
           />
         </div>
       </div>

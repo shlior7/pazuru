@@ -22,7 +22,6 @@ export const StatusSection = (props: StatusSectionProps) => {
   return (
     <section className="status">
       <Difficulty onChange={props.onChange} />
-      <Numbers onClickNumber={(number) => props.onClickNumber(number)} />
       <div className="status__actions">
         <Action action='undo' onClickAction={props.onClickUndo} />
         <Action action='erase' onClickAction={props.onClickErase} />
