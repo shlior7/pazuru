@@ -43,7 +43,7 @@ export class Block {
     return this.mySubBlock.GetActualStartAndEnd().end - this.logical_length + 1;
   }
 
-  deleteBlock(start: number, end: number) {
+  deleteFromBlock(start: number, end: number) {
     for (let i = start - this.offset; i <= end - this.offset; i++) {
       if (i >= 0 && i < this.block.length) {
         if (
@@ -195,9 +195,14 @@ export class Block {
     }
   }
 
-  SetBorderAroundSubBlock(start: number, end: number) {
-    this.deleteBlock(this.left_border, end - this.logical_length);
-    this.deleteBlock(start + this.logical_length, this.right_border);
+  SetBorderAroundSubBlock() {
+    if (!this.mySubBlock || this.mySubBlock.length === 0) return;
+
+    const start = this.mySubBlock.GetActualStartAndEnd().start;
+    const end = this.mySubBlock.GetActualStartAndEnd().end;
+
+    this.deleteFromBlock(this.left_border, end - this.logical_length);
+    this.deleteFromBlock(start + this.logical_length, this.right_border);
     this.right_border = start + this.logical_length - 1;
     this.left_border = end - this.logical_length + 1;
     this.squareBlock = this.block.slice(
@@ -207,8 +212,8 @@ export class Block {
   }
 
   SetNewBorders(left: number, right: number) {
-    this.deleteBlock(this.left_border, left - 1);
-    this.deleteBlock(right + 1, this.right_border);
+    this.deleteFromBlock(this.left_border, left - 1);
+    this.deleteFromBlock(right + 1, this.right_border);
     this.squareBlock = this.block.slice(
       left - this.offset,
       right - this.offset + 1
@@ -231,7 +236,7 @@ export class Block {
           this.mySubBlock = black_block;
         } else {
           if (black_block.length > this.logical_length) {
-            this.deleteBlock(
+            this.deleteFromBlock(
               black_block.GetActualStartAndEnd().start,
               black_block.GetActualStartAndEnd().end
             );
@@ -242,7 +247,7 @@ export class Block {
     }
 
     for (let i = this.right_border - this.logical_length - this.offset + 1; i < this.left_border + this.logical_length - this.offset; i++) {
-      this.block[i].black();
+      this.block[i] && this.block[i].black();
     }
 
 

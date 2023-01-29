@@ -48,7 +48,7 @@ export class BlockList {
         this.blocks[index - 1].mySubBlock.GetActualStartAndEnd().end + 1
       );
     }
-    blLeft.deleteBlock(blLeft.left_border, newLeft - 1);
+    blLeft.deleteFromBlock(blLeft.left_border, newLeft - 1);
     return newLeft;
   }
   jumpOverXRight(i: number, blRight: Block, index: number) {
@@ -77,7 +77,7 @@ export class BlockList {
         this.blocks[index + 1].mySubBlock.GetActualStartAndEnd().start - 1
       );
     }
-    blRight.deleteBlock(newRight + 1, blRight.right_border);
+    blRight.deleteFromBlock(newRight + 1, blRight.right_border);
     //console.log(" ");
     return newRight;
   }
@@ -108,7 +108,7 @@ export class BlockList {
         this.blocks[index + 1].left_border =
           block.XAround[block.XAround.length - 1];
       }
-      block.deleteBlock(block.left_border, block.right_border);
+      block.deleteFromBlock(block.left_border, block.right_border);
       this.blocks.splice(index, 1);
     }
     if (this.blocks.length === 0) {
@@ -133,14 +133,16 @@ export class BlockList {
       blLeft.left_border = k;
       blRight.right_border = f;
     });
-    this.blocks.map((bl, index) => {
+
+    this.blocks.forEach((bl) => {
       bl.SetNewBorders(bl.left_border, bl.right_border);
     });
   }
+
   setBorder() {
     let i = 0;
     let j = this.squares.length - 1;
-    this.blocks.map((blLeft, index) => {
+    this.blocks.forEach((blLeft, index) => {
       let blRight = this.blocks[this.blocks.length - 1 - index];
       blLeft.left_border = i; //including
       blRight.right_border = j;
@@ -149,8 +151,7 @@ export class BlockList {
       //console.log("b", i, j, bl);
     });
 
-    this.blocks.map((bl) => {
-      // console.log("c", bl.left_border, bl.right_border, bl);
+    this.blocks.forEach((bl) => {
       bl.squareBlock = this.squares.slice(bl.left_border, bl.right_border + 1);
       bl.block.forEach((square) => {
         square.myBlocks.push(bl);
