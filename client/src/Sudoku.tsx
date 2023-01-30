@@ -217,6 +217,30 @@ export const Sudoku: React.FC<{}> = () => {
         setGameArray(solvedArray)
       }
   }
+  let interval:any;
+  
+  async function onSolveByHistory(){
+    const newGameArray = gameArray.slice();
+
+    const board = [];
+    while(newGameArray.length) board.push(newGameArray.splice(0,9).map((x) => parseInt(x)));
+
+    const solved = await axios.post('http://localhost:8002/history',board).catch(e=>{});
+    const hisory = solved?.data;
+    const tempArray = gameArray.slice();
+    let i = 0;
+
+    interval = !interval && setInterval(() => {
+      if(i<hisory.length){
+        const [row,col,val] = hisory[i].split(',')
+        tempArray[parseInt(row)*9+parseInt(col)] = val;
+        setGameArray(tempArray);
+        i++;
+      }else{
+        clearInterval(interval);
+      }
+    }, 1000);
+  }
 
   /**
    * Close the overlay on Click.
@@ -231,6 +255,8 @@ export const Sudoku: React.FC<{}> = () => {
    */
   useEffect(() => {
     _createNewGame();
+
+    
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

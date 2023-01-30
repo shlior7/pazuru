@@ -3,7 +3,7 @@ import Square from "./Square";
 import SubBlock from "./SubBlock";
 
 export class Block {
-  readonly logical_length: number;
+  logical_length: number;
   offset: number;
   block: Square[];
   left_border: number;

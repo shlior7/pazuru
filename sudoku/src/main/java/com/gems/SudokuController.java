@@ -1,5 +1,6 @@
 package com.gems;
 
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,12 @@ public class SudokuController {
 		int[][] solved = solver.SolveSudoku();
 		boolean isSolved = SudokuValidator.isValidSudoku(solved);
 		System.out.println(isSolved);
-		return new ResponseEntity<>(solved, isSolved ? HttpStatus.OK : HttpStatus.I_AM_A_TEAPOT);
+		return new ResponseEntity<>(solved, HttpStatus.OK );
+	}
+	@PostMapping("/history")
+	public ResponseEntity<String[]> history(@RequestBody int[][] board) {
+		SudokuSolver solver = new SudokuSolver(board);
+		int[][] solved = solver.SolveSudoku();
+		return new ResponseEntity<>(solver.getHistory(), HttpStatus.OK);
 	}
 }

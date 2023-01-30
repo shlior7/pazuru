@@ -156,7 +156,6 @@ void Board::print()
 		cout << "|\n";
 	}
 	cout << endl;
-	sleep(1);
 }
 
 void Board::sort_sum_cells()

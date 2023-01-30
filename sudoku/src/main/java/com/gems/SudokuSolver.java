@@ -1,9 +1,11 @@
 package com.gems;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class SudokuSolver {
+	public ArrayList<String> history;
 	private int[][] Mat;
 	private int[][][] luah;
 	private boolean Success;
@@ -16,7 +18,12 @@ public class SudokuSolver {
 
 		this.luah = new int[9][9][10];
 		this.Mat = Mat;
+		this.history = new ArrayList<String>();
 		input(luah, Mat);
+	}
+	
+	public String[] getHistory() {
+		return this.history.toArray(new String[0]);
 	}
 
 	public int[][] SolveSudoku() {
@@ -41,15 +48,8 @@ public class SudokuSolver {
 		if (counter != -1) {
 			Success = true;
 		} 
-		else{
-			bruteForce(luah);
-		}
 		print(luah, 0);
 		return getSolvedLayer();
-	}
-	public void bruteForce(int[][][] luah)
-	{
-		 
 	}
 
 	public int[][] getSolvedLayer() {
@@ -121,6 +121,9 @@ public class SudokuSolver {
 		}
 		return true;
 	}
+	public void addToHistory(int i,int j,int value){
+		this.history.add(String.format("%d,%d,%d", i, j, value));
+	}
 
 	public void lastResort(int[][][] tlat, int i, int j) {
 		int counter = 0;
@@ -135,6 +138,7 @@ public class SudokuSolver {
 		if (counter == 1) {
 			tlat[i][j][0] = value;
 			tlat[i][j][value] = 0;
+			addToHistory(i, j, value);
 		}
 	}
 
@@ -155,6 +159,7 @@ public class SudokuSolver {
 			}
 			if (counter1 == 8) {
 				tlat[i][j][0] = tlat[i][j][l];
+				addToHistory(i, j, tlat[i][j][l]);
 			}
 			counter1 = 0;
 
@@ -165,7 +170,7 @@ public class SudokuSolver {
 			}
 			if (counter1 == 8) {
 				tlat[i][j][0] = tlat[i][j][l];
-
+				addToHistory(i, j, tlat[i][j][l]);
 				HintLocation = 1;
 			}
 			counter1 = 0;
@@ -177,6 +182,7 @@ public class SudokuSolver {
 			}
 			if (counter1 == 8) {
 				tlat[i][j][0] = tlat[i][j][l];
+				addToHistory(i, j, tlat[i][j][l]);
 				HintLocation = 2;
 			}
 			counter1 = 0;

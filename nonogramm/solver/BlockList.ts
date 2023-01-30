@@ -120,7 +120,6 @@ export class BlockList {
   }
 
   changeBorder() {
-    //console.log("Change", this);
     this.blocks.forEach((blLeft, index) => {
       let blRight = this.blocks[this.blocks.length - 1 - index];
 
