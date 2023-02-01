@@ -18,12 +18,6 @@ public class SudokuController {
 		int[][] solved = solver.SolveSudoku();
 		boolean isSolved = SudokuValidator.isValidSudoku(solved);
 		System.out.println(isSolved);
-		return new ResponseEntity<>(solved, HttpStatus.OK );
-	}
-	@PostMapping("/history")
-	public ResponseEntity<String[]> history(@RequestBody int[][] board) {
-		SudokuSolver solver = new SudokuSolver(board);
-		int[][] solved = solver.SolveSudoku();
-		return new ResponseEntity<>(solver.getHistory(), HttpStatus.OK);
+		return new ResponseEntity<>(solved, isSolved? HttpStatus.OK: HttpStatus.I_AM_A_TEAPOT );
 	}
 }

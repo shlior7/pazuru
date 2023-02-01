@@ -21,10 +21,10 @@ export const Nonogram: FunctionComponent<NonogramProps> = ({
   //const [okInput, setokInput] = useState(true);
   let okInput = true;
   let name = "";
-
+  const history = []
   const solveGrid = async () => {
     const response = await axios.post('http://localhost:8001/solve',{left:leftGrid,up:upGrid})
-    console.log(response.data)
+    // console.log(response.data)
     setGrid(response.data)
   };
 

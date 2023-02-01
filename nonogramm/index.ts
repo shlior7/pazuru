@@ -15,7 +15,7 @@ app.use((_, res, next) => {
 });
 
 app.post("/solve", (req, res) => {
-  console.log("hi")
+  // console.log("hi")
   if (!req.body || !req.body.left || !req.body.up) {
     console.log(req.body)
     res.sendStatus(400)
